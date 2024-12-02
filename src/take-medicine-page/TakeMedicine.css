@@ -1,0 +1,42 @@
+/* .take-medicine-page {
+  background-color: #fafafa;
+  height: 100vh;
+} */
+
+.today-date {
+  display: flex;
+  justify-content: center;
+}
+
+.today-date-underArrow {
+  margin-top: 0.5rem;
+}
+
+.today-take-medicine-list {
+  align-items: center;
+  text-align: center;
+}
+
+.selectedTime-btn {
+  border: 1px solid #86b07d;
+  background-color: #f7f7f7;
+  color: #86b07d;
+  padding: 0.2rem;
+  width: 30%;
+  border-radius: 0.2rem;
+}
+
+.selectedTime-btn:hover {
+  background-color: #86b07d;
+  color: white;
+}
+
+.selectedTime-btn:active {
+  background-color: #86b07d;
+  color: white;
+}
+
+.selectedTime-btn.active {
+  background-color: #86b07d;
+  color: white;
+}
