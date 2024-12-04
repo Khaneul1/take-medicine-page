@@ -30,6 +30,8 @@
 
 .alarm-list {
   margin-top: 1rem;
+  border-top: 1px solid #dadada;
+  padding-top: 1rem;
 }
 
 .alarm-item {
@@ -112,27 +114,20 @@
   transform: translateX(1.25rem);
 }
 
-/* 슬라이드 상태 */
-.alarm-item.swiped {
-  transform: translateX(-4rem);
-  transition: transform 0.3s ease-in-out;
-  position: relative;
+.add-alarm-section {
+  margin: 0.5rem;
 }
 
-.delete-alarm-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #ff4d4f;
-  color: white;
+.new-alarm-input {
+  border: 1px solid #86b07d;
+  width: 40%;
+}
+
+.save-alarm-btn,
+.cancel-alarm-btn {
   border: none;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  width: 4rem;
+  height: 1.5rem;
+  margin-left: 0.3rem;
 }

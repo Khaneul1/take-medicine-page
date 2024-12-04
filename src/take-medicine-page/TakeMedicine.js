@@ -3,6 +3,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MedicationList from './MedicationList';
 import './TakeMedicine.css';
 import AlarmManager from './AlarmManager';
+import AddMedicationForm from './AddMedicationForm';
+import AddIcon from '@mui/icons-material/Add';
 
 //1. 날짜 설정
 //2. 아침/점심/저녁 버튼 + state 값으로 각 시간대별 복용 약 렌더링
@@ -49,9 +51,18 @@ const TakeMedicine = () => {
   ]);
 
   const [selectedTime, setSelectedTime] = useState('아침');
+  const [showAddForm, setShowAddForm] = useState(false);
   const filteredMedications = medications.filter(
     (medication) => medication.time === selectedTime
   );
+
+  const AddMedication = (newMedication) => {
+    setMedications((prev) => [
+      ...prev,
+      { id: prev.length + 1, ...newMedication },
+    ]);
+    setShowAddForm(false);
+  };
 
   return (
     <div className="take-medicine-page">
@@ -74,6 +85,17 @@ const TakeMedicine = () => {
       </div>
       <div>
         <MedicationList medications={filteredMedications} />
+      </div>
+      <div className="add-medication-form">
+        {!showAddForm && (
+          <button
+            className="add-medication-btn"
+            onClick={() => setShowAddForm(true)}
+          >
+            <AddIcon />
+          </button>
+        )}
+        {showAddForm && <AddMedicationForm onAddMedication={AddMedication} />}
       </div>
       <div>
         <AlarmManager />

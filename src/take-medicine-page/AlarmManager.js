@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
-import DeleteIcon from '@mui/icons-material/Delete';
-
 import './AlarmManager.css';
 
 const AlarmManager = () => {
@@ -10,8 +8,6 @@ const AlarmManager = () => {
   const [newAlarm, setNewAlarm] = useState(''); //사용자가 추가할 알람 시간
   const [alertMessage, setAlertMessage] = useState(''); //알림 메시지 (약을 복용할 시간이에요!)
   const [isInputVisible, setIsInputVisible] = useState(false); //알람 추가 버튼 클릭시 input창 뜨도록
-  const [swipeIndex, setSwipeIndex] = useState(null);
-  const [startX, setStartX] = useState(0);
 
   //알람 추가
   const handleAddAlarm = () => {
@@ -28,25 +24,6 @@ const AlarmManager = () => {
         i === index ? { ...alarm, isActive: !alarm.isActive } : alarm
       )
     );
-  };
-
-  const handleDeleteAlarm = (index) => {
-    setAlarms((prev) => prev.filter((_, i) => i !== index));
-    setSwipeIndex(null);
-  };
-
-  const handleTouchStart = (e, index) => {
-    setStartX(e.touches[0].clientX);
-    setSwipeIndex(index);
-  };
-
-  const handleTouchMove = (e, index) => {
-    const moveX = e.touches[0].clientX;
-    if (startX - moveX > 50) {
-      setSwipeIndex(index);
-    } else if (moveX - startX > 50) {
-      setSwipeIndex(null);
-    }
   };
 
   //실시간 복용 알림 확인창 (수정 예정)
@@ -77,13 +54,7 @@ const AlarmManager = () => {
       <div className="alarm-list">
         {alarms.length > 0 ? (
           alarms.map((alarm, index) => (
-            <div
-              key={index}
-              className={`alarm-item ${swipeIndex === index ? 'swiped' : ''}`}
-              onTouchStart={(e) => handleTouchStart(e, index)}
-              onTouchMove={(e) => handleTouchMove(e, index)}
-              onTouchEnd={() => setSwipeIndex(null)}
-            >
+            <div key={index} className="alarm-item">
               <p>
                 {alarm.time} <AccessAlarmsIcon className="alarm-icon" />
               </p>
@@ -96,14 +67,6 @@ const AlarmManager = () => {
                 />
                 <label htmlFor={`switch-${index}`}></label>
               </div>
-              {swipeIndex === index && (
-                <button
-                  className="delete-alarm-btn"
-                  onClick={() => handleDeleteAlarm(index)}
-                >
-                  <DeleteIcon />
-                </button>
-              )}
             </div>
           ))
         ) : (
