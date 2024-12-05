@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MedicationList from './MedicationList';
 import './TakeMedicine.css';
 import AlarmManager from './AlarmManager';
-import AddMedicationForm from './AddMedicationForm';
 import AddIcon from '@mui/icons-material/Add';
 
 //1. 날짜 설정
@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 //5. 복용 체크 on/off 버튼 추가
 
 const TakeMedicine = () => {
+  const navigate = useNavigate();
   const today = new Date();
   const formattedDate = `${today.getMonth() + 1}. ${today.getDate()}`;
 
@@ -51,17 +52,12 @@ const TakeMedicine = () => {
   ]);
 
   const [selectedTime, setSelectedTime] = useState('아침');
-  const [showAddForm, setShowAddForm] = useState(false);
   const filteredMedications = medications.filter(
     (medication) => medication.time === selectedTime
   );
 
-  const AddMedication = (newMedication) => {
-    setMedications((prev) => [
-      ...prev,
-      { id: prev.length + 1, ...newMedication },
-    ]);
-    setShowAddForm(false);
+  const handelAddMedication = () => {
+    navigate('/add-medication');
   };
 
   return (
@@ -87,15 +83,9 @@ const TakeMedicine = () => {
         <MedicationList medications={filteredMedications} />
       </div>
       <div className="add-medication-form">
-        {!showAddForm && (
-          <button
-            className="add-medication-btn"
-            onClick={() => setShowAddForm(true)}
-          >
-            <AddIcon />
-          </button>
-        )}
-        {showAddForm && <AddMedicationForm onAddMedication={AddMedication} />}
+        <button className="add-medication-btn" onClick={handelAddMedication}>
+          <AddIcon />
+        </button>
       </div>
       <div>
         <AlarmManager />
