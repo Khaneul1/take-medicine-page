@@ -5,18 +5,27 @@ import './AlarmManager.css';
 
 const AlarmManager = () => {
   const [alarms, setAlarms] = useState([]); //알람 리스트
-  const [newAlarm, setNewAlarm] = useState(''); //사용자가 추가할 알람 시간
+  const [newAlarmTime, setNewAlarmTime] = useState(''); //알람 시간
+  const [newAlarmContent, setNewAlarmContent] = useState(''); //알람 내용
   const [alertMessage, setAlertMessage] = useState(''); //알림 메시지 (약을 복용할 시간이에요!)
   const [isInputVisible, setIsInputVisible] = useState(false); //알람 추가 버튼 클릭시 input창 뜨도록
 
   //알람 추가
   const handleAddAlarm = () => {
-    if (!newAlarm) return;
-    setAlarms((prev) => [...prev, { time: newAlarm, isActive: false }]);
-    setNewAlarm('');
+    if (!newAlarmTime || !newAlarmContent) return;
+    setAlarms((prev) => [
+      ...prev,
+      {
+        time: `${newAlarmTime}`,
+        content: newAlarmContent,
+        isActive: false,
+      },
+    ]);
+
+    setNewAlarmTime('');
+    setNewAlarmContent('');
     setIsInputVisible(false);
   };
-
   //on/off 스위치 버튼
   const toggleAlarm = (index) => {
     setAlarms((prev) =>
@@ -29,7 +38,7 @@ const AlarmManager = () => {
   //실시간 복용 알림 확인창 (수정 예정)
   useEffect(() => {
     const interval = setInterval(() => {
-      const currentTime = new Date().toLocaleTimeString('en-US', {
+      const currentTime = new Date().toLocaleTimeString('ko-KR', {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
@@ -40,7 +49,7 @@ const AlarmManager = () => {
       );
 
       if (activeAlarm) {
-        setAlertMessage('약을 복용할 시간이에요!');
+        setAlertMessage(`알림: ${activeAlarm.content}`);
         setTimeout(() => setAlertMessage(''), 5000);
       }
     }, 1000);
@@ -56,7 +65,9 @@ const AlarmManager = () => {
           alarms.map((alarm, index) => (
             <div key={index} className="alarm-item">
               <p>
-                {alarm.time} <AccessAlarmsIcon className="alarm-icon" />
+                {alarm.time}{' '}
+                <span className="alarm-content">{alarm.content}</span>
+                <AccessAlarmsIcon className="alarm-icon" />
               </p>
               <div className="switch">
                 <input
@@ -79,19 +90,28 @@ const AlarmManager = () => {
           <div className="add-alarm-input-box">
             <input
               type="time"
-              value={newAlarm}
-              onChange={(e) => setNewAlarm(e.target.value)}
+              value={newAlarmTime}
+              onChange={(e) => setNewAlarmTime(e.target.value)}
               className="new-alarm-input"
             />
-            <button className="save-alarm-btn" onClick={handleAddAlarm}>
-              저장
-            </button>
-            <button
-              className="cancel-alarm-btn"
-              onClick={() => setIsInputVisible(false)}
-            >
-              취소
-            </button>
+            <input
+              type="text"
+              placeholder="알람 내용"
+              value={newAlarmContent}
+              onChange={(e) => setNewAlarmContent(e.target.value)}
+              className="new-alarm-content-input"
+            />
+            <div className="add-alarm-btns">
+              <button className="save-alarm-btn" onClick={handleAddAlarm}>
+                저장
+              </button>
+              <button
+                className="cancel-alarm-btn"
+                onClick={() => setIsInputVisible(false)}
+              >
+                취소
+              </button>
+            </div>
           </div>
         ) : (
           <button
